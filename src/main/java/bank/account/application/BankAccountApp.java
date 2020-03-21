@@ -1,6 +1,6 @@
 package bank.account.application;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import utilities.ReadCSV;
@@ -8,22 +8,32 @@ import utilities.ReadCSV;
 public class BankAccountApp {
 
 	public static void main(String[] args) {
+		List<Account> accounts = new ArrayList<>();
+
 		// Load file
 		String file = "C:\\Users\\Spyrka PC\\eclipse-workspace\\external files\\original.csv";
 		List<String[]> bankClients = ReadCSV.read(file);
+
+		// Create objects from file data
 		for (String[] bankClient : bankClients) {
-			System.out.println(Arrays.deepToString(bankClient));
+			String ownerName = bankClient[0];
+			String sSn = bankClient[1];
+			String accountType = bankClient[2];
+			double initialBalance = Double.parseDouble(bankClient[3]);
+
+			if (accountType.equals("Checking")) {
+				accounts.add(new Checking(ownerName, sSn, initialBalance));
+			} else if (accountType.equals("Savings")) {
+				accounts.add(new Savings(ownerName, sSn, initialBalance));
+			} else {
+				System.out.println("ERROR READING ACCOUNT TYPE.");
+			}
 		}
 
-		// Save file into data structure
-		/*
-		 * Checking checkAcc1 = new Checking("Martin Cornick", "27541328903", 4300);
-		 * checkAcc1.showInfo(); checkAcc1.withdraw(200); checkAcc1.deposit(2000);
-		 * checkAcc1.transfer("Friend of mine", 500); checkAcc1.compound();
-		 * System.out.println("**************"); Savings savAcc1 = new
-		 * Savings("Coroline Wozniacki", "26354875946", 2870); savAcc1.showInfo();
-		 * System.out.println("**************");
-		 */
+		for (Account account : accounts) {
+			System.out.println("***********************************");
+			account.showInfo();
+		}
 	}
 
 }
