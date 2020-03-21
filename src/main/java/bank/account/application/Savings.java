@@ -9,37 +9,31 @@ public class Savings extends Account {
 	// specific constructor
 	public Savings(String ownerName, String sSn, double initDeposit) {
 		super(ownerName, sSn, initDeposit);
-		accountNumber = "1" + accountNumber;
-		System.out.println("Savings");
-	}
-
-	// specific methods
-	public void depositBox() {
+		this.accountNumber = "1" + accountNumber;
+		this.safetyDepositId = createSafetyDepositId();
+		this.safetyDepositCode = createSafetyDepositCode();
 
 	}
 
-	public void topUpBox() {
+	private int createSafetyDepositCode() {
+		return (int) (Math.random() * (Math.pow(10, 4) - Math.pow(10, 3) + 1) + Math.pow(10, 3));
+	}
 
+	private int createSafetyDepositId() {
+		return (int) (Math.random() * (Math.pow(10, 3) - Math.pow(10, 2) + 1) + Math.pow(10, 2));
 	}
 
 	@Override
 	public double baseRate() {
-		// TODO Auto-generated method stub
-		return (super.baseRate() - 0.25 * super.baseRate());
+		return (super.baseRate() - 0.25);
 	}
 
 	@Override
-	protected String showInfo() {
-		// TODO Auto-generated method stub
-		return super.showInfo() + getSafetyDepositCode() + getSafetyDepositId();
-	}
-
-	int getSafetyDepositId() {
-		return safetyDepositId;
-	}
-
-	int getSafetyDepositCode() {
-		return safetyDepositCode;
+	public void showInfo() {
+		System.out.println("Your savings account details:");
+		super.showInfo();
+		System.out.println(
+				"SAFETY DEPOSIT BOX ID: " + safetyDepositId + "\nSAFETY DEPOSIT BOX CODE: " + safetyDepositCode);
 	}
 
 }

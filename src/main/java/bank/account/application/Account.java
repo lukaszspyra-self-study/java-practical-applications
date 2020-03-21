@@ -3,11 +3,11 @@ package bank.account.application;
 public abstract class Account implements IBaseRate {
 
 	// Common setting of Checking and Saving accounts
-	protected String ownerName;
-	protected String sSn;
+	private String ownerName;
+	private String sSn;
 	private double accountBalance;
 	private static int index = 10000;
-	String accountNumber;
+	protected String accountNumber;
 	private double rate;
 
 	// Constructor with common settings and initialize the account
@@ -15,8 +15,8 @@ public abstract class Account implements IBaseRate {
 		this.ownerName = ownerName;
 		this.sSn = sSn;
 		this.accountBalance = initDeposit;
-		System.out.println("Account");
 		this.accountNumber = createAccountNumber();
+		this.rate = baseRate();
 	}
 
 	private String createAccountNumber() {
@@ -27,21 +27,39 @@ public abstract class Account implements IBaseRate {
 	}
 
 	// Common methods
-	protected void deposit(int amount) {
+	public void compound() {
+		double accSavings = accountBalance * (rate / 100);
+		accountBalance += accSavings;
+		System.out.println("ACCRUED FOUNDS: $" + accSavings);
+		displayAccountBalance();
 
 	}
 
-	protected void withdraw(int amount) {
-
+	public void deposit(double amount) {
+		accountBalance += amount;
+		System.out.println("DEPOSITING $" + amount);
+		displayAccountBalance();
 	}
 
-	protected void transfer(int amout, int orgAccount, int destAccount) {
-
+	public void withdraw(double amount) {
+		accountBalance -= amount;
+		System.out.println("Withdrawing $" + amount);
+		displayAccountBalance();
 	}
 
-	protected String showInfo() {
-		return "Account [ownerName=" + ownerName + ", sSn=" + sSn + ", accountBalance=" + accountBalance
-				+ ", accountNumber=" + accountNumber + ", rate=" + rate + "]";
+	public void transfer(String destination, double amount) {
+		accountBalance -= amount;
+		System.out.println("TRANSFERING $" + amount + " TO " + "\"" + destination + "\"");
+		displayAccountBalance();
+	}
+
+	public void displayAccountBalance() {
+		System.out.println("ACCOUNT BALANCE: " + accountBalance);
+	}
+
+	protected void showInfo() {
+		System.out.println("OWNER NAME: " + ownerName + "\nSOCIAL SECURITY NUMBER: " + sSn + "\nACCOUNT BALANCE: "
+				+ accountBalance + "\nACCOUNT NUMBER: " + accountNumber + "\nRATE: " + rate + "%");
 	}
 
 }
